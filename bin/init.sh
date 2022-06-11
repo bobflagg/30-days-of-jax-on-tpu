@@ -14,5 +14,9 @@ cd
 git clone https://github.com/google/flax.git
 pip install --user -e flax
 
+pip install torch==1.11.0 https://storage.googleapis.com/tpu-pytorch/wheels/cuda/112/torch_xla-1.11-cp37-cp37m-linux_x86_64.whl --force-reinstall 
+pip install tensorflow
+
+
 
 

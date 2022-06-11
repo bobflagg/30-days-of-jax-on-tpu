@@ -28,13 +28,14 @@ gcloud alpha compute tpus tpu-vm create ${VM} --zone ${ZONE} --accelerator-type 
 gcloud alpha compute tpus tpu-vm scp ~/.ssh/id_ed25519 ~/.ssh/id_ed25519.pub ${VM}:~/.ssh/.
 gcloud alpha compute tpus tpu-vm ssh ${VM} --zone ${ZONE} --project ${PROJECT}
 
-# git config --global user.email "calcworks@gmail.com"
-# git config --global user.name "Bob Flagg"
-# git clone git@github.com:bobflagg/30-days-of-jax-on-tpu.git'
-# cd /home/rflagg/30-days-of-jax-on-tpu/bin
-# ./init.sh
-# screen -S jupyter
-# ./start-jupyter.sh
-# gcloud alpha compute tpus tpu-vm ssh ${VM} --zone ${ZONE} --project ${PROJECT} -- -v -NL 8080:localhost:8080
+cat << EOF
+git config --global user.email "calcworks@gmail.com"
+git config --global user.name "Bob Flagg"
+git clone git@github.com:bobflagg/30-days-of-jax-on-tpu.git'
+cd /home/rflagg/30-days-of-jax-on-tpu/bin
+./init.sh
+screen -S jupyter
+./start-jupyter.sh
+gcloud alpha compute tpus tpu-vm ssh ${VM} --zone ${ZONE} --project ${PROJECT} -- -v -NL 8080:localhost:8080
 # http://127.0.0.1:8080/?token=9d77aff9b04305bce60648ade73d281e9047e8320294b374
-
+EOF
