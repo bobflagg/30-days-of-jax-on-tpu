@@ -15,18 +15,22 @@ then
 	export TPU=v2-8
 fi
 
+echo -n "Choose a task (1 = start vm instance, 2 = list vm instances, 3 = delete vm instance): "
+read TASK
+
 export PROJECT=jax-tpu-getting-started
 export VM=jtgs
 
-echo "zone=$ZONE, tpu=$TPU, project=$PROJECT, vm=$VM"
+echo "zone=$ZONE, tpu=$TPU, project=$PROJECT, vm=$VM, task=$TASK"
 
 gcloud config set account calcworks@gmail.com
 gcloud config set project ${PROJECT}
 gcloud config set compute/zone ${ZONE}
 
-gcloud alpha compute tpus tpu-vm create ${VM} --zone ${ZONE} --accelerator-type ${TPU} --version tpu-vm-base
-gcloud alpha compute tpus tpu-vm scp ~/.ssh/id_ed25519 ~/.ssh/id_ed25519.pub ${VM}:~/.ssh/.
-gcloud alpha compute tpus tpu-vm ssh ${VM} --zone ${ZONE} --project ${PROJECT}
+if [[ TASK -eq 1 ]]; then
+	gcloud alpha compute tpus tpu-vm create ${VM} --zone ${ZONE} --accelerator-type ${TPU} --version tpu-vm-base
+	gcloud alpha compute tpus tpu-vm scp ~/.ssh/id_ed25519 ~/.ssh/id_ed25519.pub ${VM}:~/.ssh/.
+	gcloud alpha compute tpus tpu-vm ssh ${VM} --zone ${ZONE} --project ${PROJECT}
 
 cat << EOF
 git config --global user.email "calcworks@gmail.com"
@@ -39,3 +43,8 @@ screen -S jupyter
 gcloud alpha compute tpus tpu-vm ssh ${VM} --zone ${ZONE} --project ${PROJECT} -- -v -NL 8080:localhost:8080
 # http://127.0.0.1:8080/?token=9d77aff9b04305bce60648ade73d281e9047e8320294b374
 EOF
+elif [[ TASK -eq 2 ]]; then
+  gcloud compute tpus tpu-vm list --zone ${ZONE}
+else
+  gcloud compute tpus tpu-vm delete ${VM} --zone ${ZONE} 
+fi
