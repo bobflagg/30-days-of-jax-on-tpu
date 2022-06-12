@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-
+# export PATH=~/courses/jax/git/30-days-of-jax-on-tpu/bin/:$PATH
 echo -n "Choose environment (1 = europe-west4-a/v3-8, 2 = us-central1-f/v2-8): "
 read ENVIRONMENT
 
@@ -28,7 +28,16 @@ gcloud config set project ${PROJECT}
 gcloud config set compute/zone ${ZONE}
 
 if [[ TASK -eq 1 ]]; then
-	gcloud alpha compute tpus tpu-vm create ${VM} --zone ${ZONE} --accelerator-type ${TPU} --version tpu-vm-base
+	echo -n "Do you want a preemptible instance (1 = Yes, 2 = No)? "  
+	read PREEMPTIBLE
+
+	if [[ PREEMPTIBLE -eq 1 ]]
+	then
+		export EXTRAS="--preemptible"
+	else
+		export EXTRAS=""
+	fi	
+	gcloud alpha compute tpus tpu-vm create ${VM} --zone ${ZONE} --accelerator-type ${TPU} --version tpu-vm-base $EXTRAS
 elif [[ TASK -eq 2 ]]; then
   gcloud compute tpus tpu-vm list --zone ${ZONE}
 else
