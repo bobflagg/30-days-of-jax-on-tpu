@@ -1,4 +1,4 @@
-import jax.numpy as jnp
+from jax import numpy as jnp, random
 
 class DataLoader:
     def __init__(self, X, Y, batch_size):
@@ -19,3 +19,12 @@ class DataLoader:
             else: end = int((self.batch + 1) * self.batch_size)
             return self.X[start:end], self.Y[start:end]        
         raise StopIteration
+        
+        
+def synthetic_data(key, w, b, num_examples):
+    """Generate y = Xw + b + noise."""
+    key_sample, key_noise = random.split(key)
+    X = random.normal(key_sample, (num_examples, len(w)))
+    y = jnp.dot(X, w) + b
+    y +=  0.01 * random.normal(key_noise, (len(y),))
+    return X, y
