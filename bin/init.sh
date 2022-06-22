@@ -16,6 +16,8 @@ pip install --user -e flax
 
 pip install torch
 pip install torchvision
+pip install datasets
+pip install transformers
 pip install tensorflow
 
 
