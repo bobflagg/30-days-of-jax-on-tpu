@@ -18,8 +18,9 @@ pip install torch
 pip install torchvision
 pip install datasets
 pip install transformers
-pip install tensorflow
+pip install evaluate
 
+# pip install tensorflow
 
 
 
